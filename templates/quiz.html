@@ -28,7 +28,7 @@
                     <div class="option-list">
                         {% for option in question.options %}
                         <label class="option-item">
-                            <input type="radio" name="question_{{ question.id }}" value="{{ option|e }}">
+                            <input type="radio" name="question_{{ question.id|e }}" value="{{ option|e }}">
                             <span>{{ option|e }}</span>
                         </label>
                         {% endfor %}

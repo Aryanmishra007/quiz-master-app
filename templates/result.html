@@ -23,7 +23,7 @@
                     <h3>Percentage</h3>
                     <p>{{ result.percentage }}%</p>
                 </div>
-                <div class="metric-box feedback {{ result.feedback|lower }}">
+                <div class="metric-box feedback {% if result.feedback == 'Excellent' %}excellent{% elif result.feedback == 'Good' %}good{% elif result.feedback == 'Average' %}average{% else %}poor{% endif %}">
                     <h3>Performance</h3>
                     <p>{{ result.feedback }}</p>
                 </div>

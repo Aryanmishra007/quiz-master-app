@@ -11,8 +11,28 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
 app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY") or os.urandom(24)
 TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S %Z"
+DEFAULT_STUDENT_NAME = os.getenv("STUDENT_NAME", "Quiz Participant")
+
+
+def get_secret_key():
+    env_secret = os.getenv("SECRET_KEY")
+    if env_secret:
+        return env_secret
+
+    os.makedirs(app.instance_path, exist_ok=True)
+    key_path = os.path.join(app.instance_path, "secret_key")
+    if os.path.exists(key_path):
+        with open(key_path, "rb") as key_file:
+            return key_file.read()
+
+    generated_key = os.urandom(24)
+    with open(key_path, "wb") as key_file:
+        key_file.write(generated_key)
+    return generated_key
+
+
+app.secret_key = get_secret_key()
 
 QUIZ_QUESTIONS = [
     {
@@ -143,7 +163,7 @@ def submit():
     answers = {}
     for question in questions:
         field_name = f"question_{question['id']}"
-        answers[str(question["id"])] = request.form.get(field_name, "")
+        answers[str(question["id"])] = request.form.get(field_name)
 
     session["answers"] = answers
     session["result"] = calculate_results(questions, answers)
@@ -178,7 +198,7 @@ def export_pdf():
     story.append(Paragraph("Quiz Master - Performance Report", styles["Title"]))
     story.append(Spacer(1, 10))
     story.append(Paragraph(f"Date: {timestamp.strftime(TIMESTAMP_FORMAT)}", styles["Normal"]))
-    story.append(Paragraph("Student: Quiz Participant", styles["Normal"]))
+    story.append(Paragraph(f"Student: {session.get('student_name', DEFAULT_STUDENT_NAME)}", styles["Normal"]))
     story.append(Spacer(1, 12))
 
     story.append(Paragraph(f"Score: {result['score']} / {result['total']}", styles["Heading2"]))
