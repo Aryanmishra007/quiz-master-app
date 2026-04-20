@@ -97,7 +97,13 @@ def get_ordered_questions():
     if not question_ids:
         return []
     questions_by_id = {question["id"]: question for question in QUIZ_QUESTIONS}
-    return [questions_by_id[qid] for qid in question_ids if qid in questions_by_id]
+    if any(qid not in questions_by_id for qid in question_ids):
+        session.pop("question_order", None)
+        session.pop("answers", None)
+        session.pop("result", None)
+        session.pop("result_generated_at", None)
+        return []
+    return [questions_by_id[qid] for qid in question_ids]
 
 
 def calculate_results(questions, answers):
@@ -199,7 +205,9 @@ def export_pdf():
     if not result:
         return redirect(url_for("home"))
 
-    generated_at = session.get("result_generated_at") or datetime.now(tz.tzlocal()).strftime(TIMESTAMP_FORMAT)
+    generated_at = session.get("result_generated_at")
+    if not generated_at:
+        return redirect(url_for("home"))
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4, title="Quiz Master Report")
     styles = getSampleStyleSheet()
