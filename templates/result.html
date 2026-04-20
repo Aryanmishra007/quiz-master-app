@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Master - Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <section class="card">
+            <div class="header-row">
+                <h1>Quiz Result</h1>
+                <span class="timestamp">Generated: {{ generated_at }}</span>
+            </div>
+
+            <div class="score-grid">
+                <div class="metric-box">
+                    <h3>Score</h3>
+                    <p>{{ result.score }} / {{ result.total }}</p>
+                </div>
+                <div class="metric-box">
+                    <h3>Percentage</h3>
+                    <p>{{ result.percentage }}%</p>
+                </div>
+                <div class="metric-box feedback {{ result.feedback|lower }}">
+                    <h3>Performance</h3>
+                    <p>{{ result.feedback }}</p>
+                </div>
+            </div>
+
+            <h2>Question Review</h2>
+            <div class="review-list">
+                {% for item in result.review %}
+                <article class="review-item {{ 'correct' if item.is_correct else 'incorrect' }}">
+                    <h3>Q{{ loop.index }}. {{ item.question }}</h3>
+                    <p><strong>Your Answer:</strong> {{ item.selected }}</p>
+                    <p><strong>Correct Answer:</strong> {{ item.correct }}</p>
+                    <p class="status">{{ 'Correct' if item.is_correct else 'Incorrect' }}</p>
+                </article>
+                {% endfor %}
+            </div>
+
+            <div class="actions">
+                <a class="btn primary" href="{{ url_for('export_pdf') }}">Download PDF Report</a>
+                <a class="btn secondary" href="{{ url_for('quiz') }}">Restart Quiz</a>
+                <a class="btn subtle" href="{{ url_for('home') }}">Back to Home</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
