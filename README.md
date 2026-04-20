@@ -37,6 +37,12 @@ python app.py
 http://127.0.0.1:5000/
 ```
 
+## Optional Environment Variables
+
+- `SECRET_KEY`: Sets the Flask session signing key (recommended for stable sessions across restarts).
+- `STUDENT_NAME`: Default name shown in generated PDF reports.
+- `FLASK_DEBUG=1`: Enables debug mode for local development only (do not use in production).
+
 ## Features
 
 - Home, quiz, submit, results, and PDF export routes

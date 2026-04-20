@@ -130,11 +130,19 @@ def calculate_results(questions, answers):
     else:
         feedback = "Poor"
 
+    feedback_class = {
+        "Excellent": "excellent",
+        "Good": "good",
+        "Average": "average",
+        "Poor": "poor",
+    }[feedback]
+
     return {
         "score": score,
         "total": total,
         "percentage": percentage,
         "feedback": feedback,
+        "feedback_class": feedback_class,
         "review": review,
     }
 

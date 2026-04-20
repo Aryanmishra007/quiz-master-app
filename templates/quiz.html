@@ -27,10 +27,10 @@
                     <h2>Q{{ loop.index }}. {{ question.question|e }}</h2>
                     <div class="option-list">
                         {% for option in question.options %}
-                        <label class="option-item">
-                            <input type="radio" name="question_{{ question.id|e }}" value="{{ option|e }}">
-                            <span>{{ option|e }}</span>
-                        </label>
+                        <div class="option-item">
+                            <input id="question_{{ question.id|e }}_option_{{ loop.index }}" type="radio" name="question_{{ question.id|e }}" value="{{ option|e }}">
+                            <label for="question_{{ question.id|e }}_option_{{ loop.index }}">{{ option|e }}</label>
+                        </div>
                         {% endfor %}
                     </div>
                 </article>
