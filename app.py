@@ -83,11 +83,15 @@ def quiz() -> Any:
 
     order = session["question_order"]
     current_index = session["current_index"]
+    if current_index < 0:
+        return redirect(url_for("index"))
+    if current_index >= len(order):
+        return redirect(url_for("result"))
 
     if request.method == "POST":
-        selected = request.form.get("answer", "")
+        selected = request.form.get("answer")
         question_data = QUESTIONS[order[current_index]]
-        is_correct = selected == question_data["answer"]
+        is_correct = selected is not None and selected == question_data["answer"]
 
         responses = session.get("responses", [])
         responses.append(
