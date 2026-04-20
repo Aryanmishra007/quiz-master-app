@@ -127,8 +127,10 @@ def result() -> Any:
         return redirect(url_for("index"))
 
     total = len(session.get("question_order", []))
+    if total == 0:
+        return redirect(url_for("index"))
     score = session.get("score", 0)
-    percentage = round((score / total) * 100, 2) if total else 0
+    percentage = round((score / total) * 100, 2)
 
     return render_template(
         "result.html",
@@ -147,7 +149,5 @@ def restart() -> Any:
 
 
 if __name__ == "__main__":
-    debug_requested = os.environ.get("FLASK_DEBUG", "").strip().lower() in {"1", "true", "yes", "on"}
-    is_dev_env = os.environ.get("FLASK_ENV", "").strip().lower() in {"development", "dev"}
-    debug_mode = debug_requested and is_dev_env
+    debug_mode = os.environ.get("FLASK_DEBUG", "").strip().lower() in {"1", "true", "yes", "on"}
     app.run(debug=debug_mode)
