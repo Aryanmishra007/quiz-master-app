@@ -176,6 +176,7 @@ def submit():
 
     session["answers"] = answers
     session["result"] = calculate_results(questions, answers)
+    session["result_generated_at"] = datetime.now(tz.tzlocal()).strftime(TIMESTAMP_FORMAT)
     return redirect(url_for("results"))
 
 
@@ -188,7 +189,7 @@ def results():
     return render_template(
         "result.html",
         result=result,
-        generated_at=datetime.now(tz.tzlocal()).strftime(TIMESTAMP_FORMAT),
+        generated_at=session.get("result_generated_at"),
     )
 
 
@@ -198,7 +199,7 @@ def export_pdf():
     if not result:
         return redirect(url_for("home"))
 
-    timestamp = datetime.now(tz.tzlocal())
+    generated_at = session.get("result_generated_at") or datetime.now(tz.tzlocal()).strftime(TIMESTAMP_FORMAT)
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4, title="Quiz Master Report")
     styles = getSampleStyleSheet()
@@ -206,7 +207,7 @@ def export_pdf():
 
     story.append(Paragraph("Quiz Master - Performance Report", styles["Title"]))
     story.append(Spacer(1, 10))
-    story.append(Paragraph(f"Date: {timestamp.strftime(TIMESTAMP_FORMAT)}", styles["Normal"]))
+    story.append(Paragraph(f"Date: {generated_at}", styles["Normal"]))
     story.append(Paragraph(f"Student: {DEFAULT_STUDENT_NAME}", styles["Normal"]))
     story.append(Spacer(1, 12))
 
