@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Master - Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <section class="card">
+            <div class="header-row">
+                <h1>Quiz Questions</h1>
+                <a class="btn subtle" href="{{ url_for('home') }}">Home</a>
+            </div>
+
+            <div class="progress-wrapper" aria-label="Quiz progress">
+                <div class="progress-track">
+                    <div id="progressFill" class="progress-fill" style="width:0%"></div>
+                </div>
+                <p id="progressText" class="progress-text">0 of {{ questions|length }} answered</p>
+            </div>
+
+            <form method="post" action="{{ url_for('submit') }}" id="quizForm">
+                {% for question in questions %}
+                <article class="question-block">
+                    <h2>Q{{ loop.index }}. {{ question.question|e }}</h2>
+                    <div class="option-list">
+                        {% for option in question.options %}
+                        <div class="option-item">
+                            <input id="question_{{ question.id|e }}_option_{{ loop.index }}" type="radio" name="question_{{ question.id|e }}" value="{{ option|e }}">
+                            <label for="question_{{ question.id|e }}_option_{{ loop.index }}">{{ option|e }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </article>
+                {% endfor %}
+
+                <button type="submit" class="btn primary">Submit Quiz</button>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            const total = {{ questions|length }};
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const radios = document.querySelectorAll('input[type="radio"]');
+
+            function updateProgress() {
+                const answeredNames = new Set();
+                radios.forEach((radio) => {
+                    if (radio.checked) {
+                        answeredNames.add(radio.name);
+                    }
+                });
+
+                const answered = answeredNames.size;
+                const percent = total ? (answered / total) * 100 : 0;
+                progressFill.style.width = percent + '%';
+                progressText.textContent = `${answered} of ${total} answered`;
+            }
+
+            radios.forEach((radio) => radio.addEventListener('change', updateProgress));
+            updateProgress();
+        })();
+    </script>
+</body>
+</html>

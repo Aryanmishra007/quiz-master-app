@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Master</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container center-page">
+        <section class="card hero-card">
+            <h1>Quiz Master Application</h1>
+            <p>Test your web programming fundamentals and get detailed performance insights.</p>
+            <a class="btn primary" href="{{ url_for('quiz') }}">Start Quiz</a>
+        </section>
+    </main>
+</body>
+</html>
