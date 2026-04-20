@@ -111,7 +111,7 @@ def quiz() -> Any:
         current_index = session["current_index"]
 
     question_data = QUESTIONS[order[current_index]]
-    progress_percent = ((current_index + 1) / len(order)) * 100 if order else 0
+    progress_percent = ((current_index + 1) / len(order)) * 100
     return render_template(
         "quiz.html",
         question=question_data,
