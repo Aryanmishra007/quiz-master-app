@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <main class="container card">
+        <h1>Quiz Completed</h1>
+        <p class="score">Score: <strong>{{ score }}/{{ total }}</strong></p>
+        <p class="score">Percentage: <strong>{{ percentage }}%</strong></p>
+        <p class="feedback {{ feedback|lower|replace(' ', '-') }}">Performance: {{ feedback }}</p>
+
+        <section class="review">
+            <h2>Answer Review</h2>
+            {% for item in responses %}
+            <article class="review-item {% if item.is_correct %}correct{% else %}incorrect{% endif %}">
+                <p><strong>Q{{ loop.index }}:</strong> {{ item.question }}</p>
+                <p>Your answer: {{ item.selected }}</p>
+                <p>Correct answer: {{ item.correct }}</p>
+            </article>
+            {% endfor %}
+        </section>
+
+        <form action="{{ url_for('restart') }}" method="post">
+            <button type="submit" class="btn">Restart Quiz</button>
+        </form>
+    </main>
+</body>
+</html>

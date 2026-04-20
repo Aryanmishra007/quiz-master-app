@@ -1,0 +1,144 @@
+:root {
+  --bg: #f4f7fb;
+  --text: #1f2937;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --success: #16a34a;
+  --warning: #ca8a04;
+  --danger: #dc2626;
+  --card: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(145deg, #eef2ff, var(--bg));
+  color: var(--text);
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 760px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 12px 28px rgba(31, 41, 55, 0.12);
+}
+
+h1,
+h2 {
+  margin-top: 0;
+}
+
+.subtitle {
+  color: #4b5563;
+}
+
+.instructions {
+  margin: 1rem 0 1.5rem;
+  padding-left: 1.2rem;
+}
+
+.btn {
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn:hover {
+  background: var(--primary-hover);
+}
+
+.progress-row {
+  margin-bottom: 1rem;
+}
+
+.progress-label {
+  margin: 0 0 0.5rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar span {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+}
+
+.difficulty {
+  color: #6b7280;
+}
+
+.options {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.7rem;
+}
+
+.score {
+  margin: 0.35rem 0;
+}
+
+.feedback {
+  margin: 1rem 0;
+  font-weight: 700;
+}
+
+.feedback.excellent { color: var(--success); }
+.feedback.good { color: var(--primary); }
+.feedback.average { color: var(--warning); }
+.feedback.needs-improvement { color: var(--danger); }
+
+.review {
+  margin: 1rem 0 1.5rem;
+}
+
+.review-item {
+  border-left: 4px solid #9ca3af;
+  padding: 0.6rem 0.9rem;
+  margin-bottom: 0.6rem;
+  background: #f8fafc;
+}
+
+.review-item.correct { border-left-color: var(--success); }
+.review-item.incorrect { border-left-color: var(--danger); }
+
+@media (max-width: 640px) {
+  .card {
+    padding: 1rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
