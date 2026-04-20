@@ -13,6 +13,7 @@ from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, Tabl
 app = Flask(__name__)
 TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S %Z"
 DEFAULT_STUDENT_NAME = os.getenv("STUDENT_NAME", "Quiz Participant")
+PDF_TABLE_COLUMN_WIDTHS = [180, 110, 110, 70]
 
 
 def get_secret_key():
@@ -206,7 +207,7 @@ def export_pdf():
     story.append(Paragraph("Quiz Master - Performance Report", styles["Title"]))
     story.append(Spacer(1, 10))
     story.append(Paragraph(f"Date: {timestamp.strftime(TIMESTAMP_FORMAT)}", styles["Normal"]))
-    story.append(Paragraph(f"Student: {session.get('student_name', DEFAULT_STUDENT_NAME)}", styles["Normal"]))
+    story.append(Paragraph(f"Student: {DEFAULT_STUDENT_NAME}", styles["Normal"]))
     story.append(Spacer(1, 12))
 
     story.append(Paragraph(f"Score: {result['score']} / {result['total']}", styles["Heading2"]))
@@ -225,7 +226,7 @@ def export_pdf():
             ]
         )
 
-    review_table = Table(table_data, colWidths=[180, 110, 110, 70], repeatRows=1)
+    review_table = Table(table_data, colWidths=PDF_TABLE_COLUMN_WIDTHS, repeatRows=1)
     review_table.setStyle(
         TableStyle(
             [
