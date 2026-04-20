@@ -11,7 +11,8 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
 app = Flask(__name__)
-app.secret_key = "quiz-master-secret-key"
+app.secret_key = os.getenv("SECRET_KEY") or os.urandom(24)
+TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S %Z"
 
 QUIZ_QUESTIONS = [
     {
@@ -158,7 +159,7 @@ def results():
     return render_template(
         "result.html",
         result=result,
-        generated_at=datetime.now(tz.tzlocal()).strftime("%Y-%m-%d %H:%M:%S %Z"),
+        generated_at=datetime.now(tz.tzlocal()).strftime(TIMESTAMP_FORMAT),
     )
 
 
@@ -176,7 +177,7 @@ def export_pdf():
 
     story.append(Paragraph("Quiz Master - Performance Report", styles["Title"]))
     story.append(Spacer(1, 10))
-    story.append(Paragraph(f"Date: {timestamp.strftime('%Y-%m-%d %H:%M:%S %Z')}", styles["Normal"]))
+    story.append(Paragraph(f"Date: {timestamp.strftime(TIMESTAMP_FORMAT)}", styles["Normal"]))
     story.append(Paragraph("Student: Quiz Participant", styles["Normal"]))
     story.append(Spacer(1, 12))
 

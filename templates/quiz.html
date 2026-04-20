@@ -24,12 +24,12 @@
             <form method="post" action="{{ url_for('submit') }}" id="quizForm">
                 {% for question in questions %}
                 <article class="question-block">
-                    <h2>Q{{ loop.index }}. {{ question.question }}</h2>
+                    <h2>Q{{ loop.index }}. {{ question.question|e }}</h2>
                     <div class="option-list">
                         {% for option in question.options %}
                         <label class="option-item">
-                            <input type="radio" name="question_{{ question.id }}" value="{{ option }}">
-                            <span>{{ option }}</span>
+                            <input type="radio" name="question_{{ question.id }}" value="{{ option|e }}">
+                            <span>{{ option|e }}</span>
                         </label>
                         {% endfor %}
                     </div>
