@@ -111,11 +111,13 @@ def quiz() -> Any:
         current_index = session["current_index"]
 
     question_data = QUESTIONS[order[current_index]]
+    progress_percent = ((current_index + 1) / len(order)) * 100 if order else 0
     return render_template(
         "quiz.html",
         question=question_data,
         current=current_index + 1,
         total=len(order),
+        progress_percent=progress_percent,
     )
 
 
@@ -145,5 +147,7 @@ def restart() -> Any:
 
 
 if __name__ == "__main__":
-    debug_mode = os.environ.get("FLASK_DEBUG", "").strip().lower() in {"1", "true", "yes", "on"}
+    debug_requested = os.environ.get("FLASK_DEBUG", "").strip().lower() in {"1", "true", "yes", "on"}
+    is_dev_env = os.environ.get("FLASK_ENV", "").strip().lower() in {"development", "dev"}
+    debug_mode = debug_requested and is_dev_env
     app.run(debug=debug_mode)
