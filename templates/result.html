@@ -11,7 +11,7 @@
         <h1>Quiz Completed</h1>
         <p class="score">Score: <strong>{{ score }}/{{ total }}</strong></p>
         <p class="score">Percentage: <strong>{{ percentage }}%</strong></p>
-        <p class="feedback {{ feedback|lower|replace(' ', '-') }}">Performance: {{ feedback }}</p>
+        <p class="feedback {{ feedback|lower|replace(' ', '-') }}" aria-label="Performance rating: {{ feedback }}">Performance: {{ feedback }}</p>
 
         <section class="review">
             <h2>Answer Review</h2>

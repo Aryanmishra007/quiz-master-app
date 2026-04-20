@@ -83,8 +83,6 @@ def quiz() -> Any:
 
     order = session["question_order"]
     current_index = session["current_index"]
-    if current_index < 0:
-        return redirect(url_for("index"))
     if current_index >= len(order):
         return redirect(url_for("result"))
 
