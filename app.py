@@ -1,5 +1,6 @@
 from datetime import datetime
 import io
+import os
 import random
 
 from dateutil import tz
@@ -222,4 +223,4 @@ def export_pdf():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=os.getenv("FLASK_DEBUG") == "1")
