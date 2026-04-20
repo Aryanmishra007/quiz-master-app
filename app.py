@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+import os
 import random
+import secrets
 from typing import Any
 
 from flask import Flask, redirect, render_template, request, session, url_for
 
 app = Flask(__name__)
-app.secret_key = "quiz-master-secret-key"
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", secrets.token_hex(32))
 
 QUESTIONS: list[dict[str, Any]] = [
     {
@@ -143,4 +145,5 @@ def restart() -> Any:
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    debug_mode = os.environ.get("FLASK_DEBUG", "").strip().lower() in {"1", "true", "yes", "on"}
+    app.run(debug=debug_mode)
